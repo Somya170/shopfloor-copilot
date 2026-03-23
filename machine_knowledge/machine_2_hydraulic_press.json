@@ -1,0 +1,28 @@
+{
+  "machine_id": 2,
+  "machine_name": "Machine_2",
+  "machine_type": "Hydraulic Press",
+  "location": "Zone A - Bay 2",
+  "documents": [
+    {
+      "title": "Machine_2 Hydraulic Press — Operating Manual",
+      "doc_type": "manual",
+      "content": "Machine_2 is a Hydraulic Press located in Zone A - Bay 2. Normal operating ranges: Temperature 50–75°C (optimal 60–65°C), Vibration 0.10–0.30 mm/s, RPM 1800–2400 (hydraulic pump motor), Power Consumption 800–1100 W. Maximum pressing force: 50 tons. Hydraulic system pressure: 200 bar nominal, 250 bar maximum. Ram stroke: 300 mm. Hydraulic fluid type: ISO VG 46. Fluid capacity: 80 liters. Startup procedure: (1) Check hydraulic fluid level — must be between MIN and MAX marks, (2) Inspect all hoses and fittings for leaks, (3) Start hydraulic pump at low pressure, (4) Allow system to warm up for 5 minutes, (5) Check pressure gauge reads 200 bar, (6) Test ram movement through full stroke at low speed. Shutdown procedure: (1) Return ram to top position, (2) Release system pressure using pressure relief valve, (3) Stop hydraulic pump motor, (4) Close main isolator valve, (5) Log operating hours."
+    },
+    {
+      "title": "Machine_2 Hydraulic Press — Maintenance Schedule",
+      "doc_type": "maintenance_schedule",
+      "content": "Machine_2 Hydraulic Press Preventive Maintenance Schedule. DAILY: Check hydraulic fluid level — top up only with ISO VG 46 fluid. Inspect all visible hoses for leaks, bulges or cracks. Check ram seal for fluid leakage. Verify pressure gauge reading at 200 bar during operation. Test emergency stop and pressure relief valve. Clean press bed and remove scale or debris. WEEKLY: Sample hydraulic fluid — check color and smell for contamination. Inspect hydraulic pump for unusual noise. Check all mounting bolts for tightness. Clean breather filter on hydraulic tank. Inspect ram guide bushings for wear. MONTHLY: Replace hydraulic fluid filter element. Check pump pressure and flow rate against specification. Inspect all cylinder seals — replace if weeping. Test all pressure switches and safety valves. Check motor coupling alignment. EVERY 6 MONTHS: Complete hydraulic fluid flush and refill. Full inspection of all hydraulic cylinders. Check accumulator pre-charge pressure. Replace all O-rings and seals as preventive measure. Calibrate pressure gauges. ANNUALLY: Full hydraulic system overhaul. Replace hydraulic pump if hours exceed 10000. Full electrical inspection. NDT inspection of press frame for cracks."
+    },
+    {
+      "title": "Machine_2 Hydraulic Press — Alert Explanations",
+      "doc_type": "alert_explanation",
+      "content": "Machine_2 Hydraulic Press Alert Guide. HIGH TEMPERATURE ALERT (Warning >75°C, Critical >90°C): Hydraulic fluid overheating causes viscosity breakdown and seal damage. Causes: failed oil cooler, blocked heat exchanger, excessive cycling, low fluid level, ambient temperature. Actions: Stop production immediately if above 90°C. Check cooler fan operation. Verify fluid level. Allow 30-minute cooldown before restarting. HIGH VIBRATION ALERT (Warning >0.4 mm/s, Critical >0.7 mm/s): Indicates pump cavitation, air in hydraulic circuit, worn pump internals, loose motor mounting, or misaligned coupling. Causes of cavitation: low fluid level, clogged suction filter, fluid viscosity too high. Actions: Check fluid level immediately, inspect suction filter, bleed air from system. If vibration persists, schedule pump inspection within 4 hours. RPM ANOMALY on pump motor: Causes include voltage fluctuation, overloaded pump, motor bearing failure, drive belt slipping. Actions: Check supply voltage, verify system pressure not exceeding maximum, inspect motor bearings. PRESSURE LOSS ALERT: Causes include internal cylinder seal failure, burst hose, stuck pressure relief valve. Actions: Emergency stop immediately, identify leak source, do not restart until leak is repaired. POWER CONSUMPTION HIGH (Warning >1500 W): Indicates increased hydraulic resistance — check for partially closed valve, thick fluid due to cold temperature, or pump wear."
+    },
+    {
+      "title": "Machine_2 Hydraulic Press — Operator Guidelines",
+      "doc_type": "operator_guidelines",
+      "content": "Machine_2 Hydraulic Press Operator Guidelines. SAFETY RULES: Never work under a raised ram without safety prop in place. Always wear steel-toed boots and safety glasses. Never exceed rated pressing force of 50 tons — check job card for required force. Keep hands clear of die area at all times. Never operate with hydraulic fluid leak present — stop and report immediately. Check that all guards are in place before starting production. OPERATING TIPS: Allow 5 minute warm-up before full production. For precision pressing, use slow approach speed for final 10mm of stroke. Never use rapid traverse for heavy pressing operations. Monitor fluid temperature gauge — optimal range 60-65°C. If press feels sluggish, check fluid temperature — cold fluid below 20°C requires warm-up time. DIE CHANGE PROCEDURE: Depressurize system completely before die change. Use appropriate lifting equipment for dies above 25 kg. Clean press bed before installing new die. Verify die alignment using dial gauge before production run. Always do trial press at low pressure before full production. SHIFT HANDOVER: Record press cycles completed, note any unusual sounds or slow operation, check fluid level and color, log any hydraulic leaks observed, record maximum temperature reached during shift."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "machine_id": 1,
+  "machine_name": "Machine_1",
+  "machine_type": "CNC Milling",
+  "location": "Zone A - Bay 1",
+  "documents": [
+    {
+      "title": "Machine_1 CNC Milling — Operating Manual",
+      "doc_type": "manual",
+      "content": "Machine_1 is a CNC Milling machine located in Zone A - Bay 1. Normal operating ranges: Temperature 60–85°C (optimal 70–75°C), Vibration 0.05–0.20 mm/s, RPM 2800–3600 (optimal 3200), Power Consumption 900–1200 W. Maximum rated speed: 4000 RPM. Spindle motor power: 1.5 kW. Work table size: 500x300 mm. The machine uses coolant fluid for temperature regulation. Startup procedure: (1) Check coolant level, (2) Verify spindle lock is released, (3) Home all axes, (4) Load program, (5) Set work offset, (6) Start spindle at low speed first. Shutdown procedure: (1) Complete current operation, (2) Return to home position, (3) Turn off spindle, (4) Shut down CNC controller, (5) Turn off main power."
+    },
+    {
+      "title": "Machine_1 CNC Milling — Maintenance Schedule",
+      "doc_type": "maintenance_schedule",
+      "content": "Machine_1 CNC Milling Preventive Maintenance Schedule. DAILY: Check coolant level and top up if below MIN line. Inspect spindle for unusual noise or vibration. Clean work table and remove chips. Check all axis movement for smooth operation. Verify emergency stop button functionality. WEEKLY: Lubricate all axis guide rails with recommended oil. Check spindle bearing temperature after 1 hour of operation. Inspect coolant hoses for leaks or blockages. Clean coolant tank filter. Check belt tension on spindle drive. MONTHLY: Replace coolant fluid completely. Inspect spindle bearings — replace if noise or play detected. Check all electrical connections for corrosion. Calibrate axis positioning accuracy. Inspect tool holder for wear. QUARTERLY: Full spindle overhaul inspection. Replace air filters. Check and adjust backlash on all axes. Verify all safety interlocks are functioning. ANNUALLY: Full machine calibration by certified technician. Replace all belts and seals. Full electrical inspection. Spindle bearing replacement if hours exceed 8000."
+    },
+    {
+      "title": "Machine_1 CNC Milling — Alert Explanations",
+      "doc_type": "alert_explanation",
+      "content": "Machine_1 Alert Guide. HIGH TEMPERATURE ALERT (Warning >95°C, Critical >110°C): Causes include coolant pump failure, blocked coolant nozzle, excessive cutting load, worn spindle bearings, or ambient temperature above 40°C. Immediate actions: Reduce spindle speed by 20%, check coolant flow, inspect coolant nozzle for blockage. If temperature exceeds 110°C, perform emergency stop immediately. HIGH VIBRATION ALERT (Warning >0.4 mm/s, Critical >0.7 mm/s): Causes include unbalanced tool or workpiece, worn spindle bearings, loose tool holder, damaged cutting tool, or resonance with workpiece material. Immediate actions: Reduce feed rate, check tool holder tightness, inspect cutting tool for damage. Schedule bearing inspection within 24 hours of warning. RPM ANOMALY (Warning >4200 RPM, Critical >4800 RPM): Causes include faulty spindle drive, incorrect program parameter, encoder malfunction. Immediate actions: Stop program, verify spindle speed settings, check drive parameters. POWER SPIKE ALERT (Warning >1500 W, Critical >1800 W): Causes include dull cutting tool, excessive depth of cut, insufficient coolant, seized axis. Actions: Check cutting parameters, replace cutting tool, verify axis movement is free."
+    },
+    {
+      "title": "Machine_1 CNC Milling — Operator Guidelines",
+      "doc_type": "operator_guidelines",
+      "content": "Machine_1 CNC Milling Operator Guidelines. SAFETY RULES: Always wear safety glasses when machine is running. Never open spindle guard during operation. Keep hands clear of work area during automatic cycle. Always verify work is clamped securely before starting. Never leave machine unattended during automatic cycle. OPERATING TIPS: For optimal surface finish, maintain spindle speed at 3200 RPM and feed rate at 500 mm/min. Use climb milling for finishing passes and conventional milling for roughing. Always use cutting fluid for steel and aluminum operations. Reduce speed by 30% when machining hardened materials. TOOL CHANGE PROCEDURE: Stop spindle completely before tool change. Use correct torque wrench — 25 Nm for BT30 holders. Inspect tool for damage before loading. Always reset tool length offset after tool change. COMMON PROBLEMS AND SOLUTIONS: Poor surface finish — check tool wear and reduce feed rate. Chatter during cutting — reduce depth of cut or change spindle speed. Axis positioning error — re-home machine and check for mechanical interference. Program not running — verify work offset and tool offset are set correctly. SHIFT HANDOVER CHECKLIST: Record current machine hours, note any unusual sounds or vibrations, check coolant level, log any alerts that occurred during shift."
+    }
+  ]
+}
