@@ -191,4 +191,60 @@ def toggle_user(user_id: int):
         "UPDATE users SET is_active = NOT is_active WHERE id = %s",
         (user_id,),
     )
+@machine_bp.route("/anomaly-stats", methods=["GET"])
+@jwt_required
+def anomaly_stats():
+    """Anomaly statistics for dashboard."""
+    stats = execute_many(
+        """
+        SELECT
+            m.machine_name,
+            m.id as machine_id,
+            COUNT(a.id) as total_alerts,
+            SUM(CASE WHEN a.severity = 'critical' THEN 1 ELSE 0 END) as critical_count,
+            SUM(CASE WHEN a.severity = 'warning'  THEN 1 ELSE 0 END) as warning_count,
+            SUM(CASE WHEN a.is_resolved = FALSE    THEN 1 ELSE 0 END) as active_count,
+            MAX(a.timestamp) as last_alert
+        FROM machines m
+        LEFT JOIN alerts a ON a.machine_id = m.id
+        GROUP BY m.id, m.machine_name
+        ORDER BY total_alerts DESC
+        """
+    )
+
+    recent = execute_many(
+        """
+        SELECT
+            a.id, a.machine_id, m.machine_name,
+            a.alert_type, a.message, a.severity,
+            a.is_resolved, a.timestamp,
+            md.anomaly_score
+        FROM alerts a
+        JOIN machines m ON m.id = a.machine_id
+        LEFT JOIN LATERAL (
+            SELECT anomaly_score FROM machine_data
+            WHERE machine_id = a.machine_id
+            ORDER BY timestamp DESC LIMIT 1
+        ) md ON TRUE
+        ORDER BY a.timestamp DESC
+        LIMIT 50
+        """
+    )
+
+    severity_counts = execute_one(
+        """
+        SELECT
+            COUNT(*) as total,
+            SUM(CASE WHEN severity = 'critical' AND is_resolved = FALSE THEN 1 ELSE 0 END) as active_critical,
+            SUM(CASE WHEN severity = 'warning'  AND is_resolved = FALSE THEN 1 ELSE 0 END) as active_warning,
+            SUM(CASE WHEN is_resolved = TRUE  THEN 1 ELSE 0 END) as resolved
+        FROM alerts
+        """
+    )
+
+    return jsonify({
+        "machine_stats":   [dict(r) for r in stats],
+        "recent_alerts":   [dict(r) for r in recent],
+        "severity_counts": dict(severity_counts) if severity_counts else {},
+    }), 200
     return jsonify({"message": "User status toggled"}), 200

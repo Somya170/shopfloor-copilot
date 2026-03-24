@@ -5,6 +5,7 @@ import { StatCard, StatusBadge, LiveBadge, SectionHeader, LoadingSpinner } from 
 import TelemetryChart from '@/components/charts/TelemetryChart';
 import AIChat from '@/components/rag-chat/AIChat';
 import { useSocket } from '@/hooks/useSocket';
+import AnomalyView from '@/components/dashboard/views/AnomalyView';
 import type { Machine, Alert, User } from '@/types';
 
 // ── Machine Row (Live Sensor Stream style) ───────────────────
@@ -391,51 +392,8 @@ export default function AdminView({ activeSection }: { activeSection: string }) 
     </div>
   );
 
-  // ── ANOMALY DETECTION (Alerts) ─────────────────────────────
-  if (activeSection === 'alerts') return (
-    <div className="animate-fade-up">
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 20, fontWeight: 800, color: '#0F172A' }}>Anomaly Detection</div>
-        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>All machine anomaly alerts</div>
-      </div>
-      <div className="card">
-        {activeAlerts.map(a => (
-          <div key={a.id} style={{
-            display: 'flex', alignItems: 'center', gap: 14,
-            padding: '12px 18px', borderBottom: '1px solid #F1F5F9',
-          }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 6, flexShrink: 0,
-              background: a.severity === 'critical' ? '#FEF2F2' : '#FFFBEB',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <svg width="14" height="14" fill="none" stroke={a.severity === 'critical' ? '#DC2626' : '#D97706'} strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-              </svg>
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: '#0F172A' }}>{a.machine_name}</div>
-              <div style={{ fontSize: 12, color: '#64748B', marginTop: 2 }}>{a.message}</div>
-            </div>
-            <div style={{ fontSize: 10, color: '#94A3B8' }}>{new Date(a.timestamp).toLocaleString()}</div>
-            <button
-              onClick={() => api.alerts.resolve(a.id).then(load)}
-              style={{
-                padding: '5px 12px', borderRadius: 6,
-                background: '#EFF6FF', border: '1px solid #BFDBFE',
-                color: '#0057A8', cursor: 'pointer', fontSize: 11, fontWeight: 600,
-              }}
-            >
-              Resolve
-            </button>
-          </div>
-        ))}
-        {activeAlerts.length === 0 && (
-          <div style={{ padding: 32, textAlign: 'center', color: '#94A3B8' }}>✓ No active anomalies</div>
-        )}
-      </div>
-    </div>
-  );
+  // ── ANOMALY INVESTIGATION ─────────────────────────────────
+    if (activeSection === 'alerts') return <AnomalyView />;
 
   // ── REPORTS ────────────────────────────────────────────────
   if (activeSection === 'reports') return (

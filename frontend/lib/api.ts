@@ -81,4 +81,7 @@ export const api = {
     users: () => request<any[]>('/api/admin/users'),
     toggleUser: (id: number) => request<any>(`/api/admin/users/${id}/toggle`, { method: 'POST' }),
   },
+  anomaly: {
+    stats: () => request<any>('/api/anomaly-stats'),
+  },
 };
