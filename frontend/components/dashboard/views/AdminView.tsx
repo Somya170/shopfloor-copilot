@@ -396,39 +396,186 @@ export default function AdminView({ activeSection }: { activeSection: string }) 
     if (activeSection === 'alerts') return <AnomalyView />;
 
   // ── REPORTS ────────────────────────────────────────────────
+// ── REPORTS ────────────────────────────────────────────────
   if (activeSection === 'reports') return (
-    <div className="animate-fade-up">
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 20, fontWeight: 800, color: '#0F172A' }}>Reports</div>
-        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>Machine performance reports</div>
+    <div className="animate-fade-up" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: '#0F172A' }}>Reports</div>
+        <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>Generate PDF or Excel reports for any machine</div>
       </div>
-      <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-        {machines.map(m => (
+
+      {/* Report Generator Card */}
+      <div className="card" style={{ padding: '24px' }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#0F172A', marginBottom: 16 }}>
+          Generate New Report
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 16 }}>
+          {/* Machine selector */}
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: '#64748B', letterSpacing: .5, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>
+              Machine
+            </label>
+            <select
+              id="report-machine"
+              style={{
+                width: '100%', padding: '9px 12px',
+                border: '1px solid #E2E8F0', borderRadius: 6,
+                fontSize: 13, color: '#0F172A', background: '#fff', outline: 'none',
+              }}
+            >
+              {machines.map(m => (
+                <option key={m.id} value={m.id}>{m.machine_name} — {m.machine_type}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Report type */}
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: '#64748B', letterSpacing: .5, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>
+              Report Type
+            </label>
+            <select
+              id="report-type"
+              style={{
+                width: '100%', padding: '9px 12px',
+                border: '1px solid #E2E8F0', borderRadius: 6,
+                fontSize: 13, color: '#0F172A', background: '#fff', outline: 'none',
+              }}
+            >
+              <option value="weekly">Weekly (Last 7 days)</option>
+              <option value="monthly">Monthly (Last 30 days)</option>
+            </select>
+          </div>
+
+          {/* Format */}
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: '#64748B', letterSpacing: .5, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>
+              Format
+            </label>
+            <select
+              id="report-format"
+              style={{
+                width: '100%', padding: '9px 12px',
+                border: '1px solid #E2E8F0', borderRadius: 6,
+                fontSize: 13, color: '#0F172A', background: '#fff', outline: 'none',
+              }}
+            >
+              <option value="pdf">📄 PDF Report</option>
+              <option value="excel">📊 Excel Spreadsheet</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Generate buttons */}
+        <div style={{ display: 'flex', gap: 10 }}>
           <button
-            key={m.id}
             onClick={async () => {
-              const r = await api.reports.generate({ report_type: 'weekly', machine_id: m.id });
-              setReports(p => [r, ...p]);
+              const machineId = (document.getElementById('report-machine') as HTMLSelectElement).value;
+              const reportType = (document.getElementById('report-type') as HTMLSelectElement).value;
+              const format = (document.getElementById('report-format') as HTMLSelectElement).value;
+              const token = localStorage.getItem('access_token');
+
+              try {
+                const res = await fetch('/api/generate-report', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    machine_id: parseInt(machineId),
+                    report_type: reportType,
+                    format: format,
+                  }),
+                });
+
+                if (!res.ok) throw new Error('Report generation failed');
+
+                const blob = await res.blob();
+                const url  = window.URL.createObjectURL(blob);
+                const a    = document.createElement('a');
+                const ext  = format === 'excel' ? 'xlsx' : 'pdf';
+                a.href     = url;
+                a.download = `Machine_${machineId}_${reportType}_report.${ext}`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                // Refresh reports list
+                api.reports.list().then(setReports).catch(() => {});
+              } catch (err: any) {
+                alert('Report generation failed: ' + err.message);
+              }
             }}
             style={{
-              padding: '8px 16px', borderRadius: 6, border: '1px solid #E2E8F0',
-              background: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#475569',
+              padding: '10px 24px', borderRadius: 6, border: 'none',
+              background: '#E31837', color: '#fff',
+              cursor: 'pointer', fontSize: 13, fontWeight: 700,
+              display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            {m.machine_name} Weekly
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Report
           </button>
-        ))}
+
+          <button
+            onClick={() => api.reports.list().then(setReports).catch(() => {})}
+            style={{
+              padding: '10px 16px', borderRadius: 6,
+              border: '1px solid #E2E8F0', background: '#fff',
+              color: '#64748B', cursor: 'pointer', fontSize: 13, fontWeight: 600,
+            }}
+          >
+            Refresh List
+          </button>
+        </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {reports.map((r, i) => (
-          <div key={i} className="card" style={{ padding: '16px 20px' }}>
-            <div style={{ fontWeight: 700, fontSize: 14, color: '#0F172A', marginBottom: 8 }}>{r.title ?? 'Report'}</div>
-            {r.ai_summary && <div style={{ fontSize: 12, color: '#475569', whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{r.ai_summary}</div>}
-          </div>
-        ))}
-        {reports.length === 0 && (
+
+      {/* Previous reports list */}
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#0F172A', marginBottom: 12 }}>
+          Previously Generated Reports
+        </div>
+        {reports.length === 0 ? (
           <div className="card" style={{ padding: 32, textAlign: 'center', color: '#94A3B8' }}>
-            Click a button above to generate a report
+            No reports generated yet — generate your first report above!
+          </div>
+        ) : (
+          <div className="card" style={{ overflow: 'hidden' }}>
+            {reports.map((r, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 14,
+                padding: '12px 18px', borderBottom: '1px solid #F1F5F9',
+              }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+                  background: '#EFF6FF',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <svg width="16" height="16" fill="none" stroke="#0057A8" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                  </svg>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: '#0F172A' }}>{r.title ?? 'Report'}</div>
+                  <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 2 }}>
+                    {r.report_type?.toUpperCase()} · {r.generated_at ? new Date(r.generated_at).toLocaleString() : ''}
+                  </div>
+                </div>
+                <span style={{
+                  padding: '3px 10px', borderRadius: 99,
+                  background: '#EFF6FF', color: '#0057A8',
+                  fontSize: 10, fontWeight: 600,
+                }}>
+                  {r.report_type?.toUpperCase()}
+                </span>
+              </div>
+            ))}
           </div>
         )}
       </div>

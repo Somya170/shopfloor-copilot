@@ -1,20 +1,20 @@
 """
 factory-ai-platform · routes/report_routes.py
-POST /api/generate-report
-GET  /api/reports
-GET  /api/reports/<id>
+POST /api/generate-report  — generate PDF or Excel
+GET  /api/reports          — list reports
+GET  /api/reports/<id>     — get report
 """
 import logging
 from datetime import datetime, timezone
 
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, g, jsonify, request, send_file
+import io
 
 from database.db import execute_many, execute_one
 from services.auth_service import jwt_required, roles_required
 from services.report_generator import report_generator, get_weekly_range, get_monthly_range
 
 logger = logging.getLogger(__name__)
-
 report_bp = Blueprint("reports", __name__, url_prefix="/api")
 
 
@@ -23,10 +23,11 @@ report_bp = Blueprint("reports", __name__, url_prefix="/api")
 @roles_required("admin", "tech_staff")
 def generate_report():
     data        = request.get_json(silent=True) or {}
-    report_type = data.get("report_type", "weekly")   # weekly | monthly | custom | plant_wide
-    machine_id  = data.get("machine_id")               # None for plant-wide
+    report_type = data.get("report_type", "weekly")
+    machine_id  = data.get("machine_id")
+    fmt         = data.get("format", "pdf").lower()   # 'pdf' or 'excel'
 
-    # ── resolve date range ─────────────────────────────────
+    # ── Date range ──────────────────────────────────────────
     if report_type == "weekly":
         start_dt, end_dt = get_weekly_range()
     elif report_type == "monthly":
@@ -36,29 +37,42 @@ def generate_report():
             start_dt = datetime.fromisoformat(data["start_date"]).replace(tzinfo=timezone.utc)
             end_dt   = datetime.fromisoformat(data["end_date"]).replace(tzinfo=timezone.utc)
         except (KeyError, ValueError) as exc:
-            return jsonify({"error": f"Invalid date format: {exc}"}), 400
-    elif report_type == "plant_wide":
-        start_dt, end_dt = get_weekly_range()
+            return jsonify({"error": f"Invalid date: {exc}"}), 400
     else:
         return jsonify({"error": f"Unknown report_type '{report_type}'"}), 400
 
+    if not machine_id:
+        return jsonify({"error": "machine_id is required"}), 400
+
     try:
-        if report_type == "plant_wide" or machine_id is None:
-            report = report_generator.generate_plant_report(
-                report_type="plant_wide",
-                start_dt=start_dt,
-                end_dt=end_dt,
-                generated_by=g.user_id,
-            )
-        else:
-            report = report_generator.generate_machine_report(
+        if fmt == "excel":
+            file_bytes = report_generator.generate_excel(
                 machine_id=int(machine_id),
                 report_type=report_type,
                 start_dt=start_dt,
                 end_dt=end_dt,
                 generated_by=g.user_id,
             )
-        return jsonify(report), 200
+            filename = f"Machine_{machine_id}_{report_type}_report.xlsx"
+            mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        else:
+            file_bytes = report_generator.generate_pdf(
+                machine_id=int(machine_id),
+                report_type=report_type,
+                start_dt=start_dt,
+                end_dt=end_dt,
+                generated_by=g.user_id,
+            )
+            filename = f"Machine_{machine_id}_{report_type}_report.pdf"
+            mimetype = "application/pdf"
+
+        return send_file(
+            io.BytesIO(file_bytes),
+            mimetype=mimetype,
+            as_attachment=True,
+            download_name=filename,
+        )
+
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 404
     except Exception as exc:
@@ -71,21 +85,14 @@ def generate_report():
 def list_reports():
     machine_id = request.args.get("machine_id")
     limit      = min(int(request.args.get("limit", "20")), 100)
-
     if machine_id:
         rows = execute_many(
-            """
-            SELECT id, machine_id, report_type, title, generated_by, generated_at
-            FROM reports WHERE machine_id = %s ORDER BY generated_at DESC LIMIT %s
-            """,
+            "SELECT id, machine_id, report_type, title, generated_by, generated_at FROM reports WHERE machine_id = %s ORDER BY generated_at DESC LIMIT %s",
             (int(machine_id), limit),
         )
     else:
         rows = execute_many(
-            """
-            SELECT id, machine_id, report_type, title, generated_by, generated_at
-            FROM reports ORDER BY generated_at DESC LIMIT %s
-            """,
+            "SELECT id, machine_id, report_type, title, generated_by, generated_at FROM reports ORDER BY generated_at DESC LIMIT %s",
             (limit,),
         )
     return jsonify([dict(r) for r in rows]), 200
@@ -97,6 +104,4 @@ def get_report(report_id: int):
     row = execute_one("SELECT * FROM reports WHERE id = %s", (report_id,))
     if not row:
         return jsonify({"error": "Report not found"}), 404
-    result = dict(row)
-    # content is already JSONB — psycopg2 returns it as a dict
-    return jsonify(result), 200
+    return jsonify(dict(row)), 200
