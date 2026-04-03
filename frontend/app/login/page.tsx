@@ -99,23 +99,14 @@ export default function LoginPage() {
         display: 'flex', flexDirection: 'column',
         justifyContent: 'center', padding: '60px 48px',
       }}>
-        {/* YASH Logo */}
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
-            <div style={{
-              background: '#0057A8', borderRadius: 6,
-              padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6,
-            }}>
-              <svg width="18" height="18" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-              </svg>
-              <span style={{ color: '#fff', fontWeight: 800, fontSize: 13, letterSpacing: .5 }}>YASH</span>
-            </div>
-            <span style={{ color: '#64748B', fontSize: 12 }}>Technologies</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <img
+              src="/yash-logo.png"
+              alt="Yash Technologies"
+              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
+            />
+            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>Shopfloor Copilot</span>
           </div>
-          <h2 style={{ fontSize: 26, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>Welcome back</h2>
-          <p style={{ color: '#64748B', fontSize: 14 }}>Sign in to Shopfloor Copilot</p>
-        </div>
 
         {/* Role selector */}
         <div style={{ marginBottom: 24 }}>
@@ -210,7 +201,7 @@ export default function LoginPage() {
         </form>
 
         <p style={{ textAlign: 'center', color: '#94A3B8', fontSize: 11, marginTop: 32 }}>
-          Shopfloor Copilot v1.0 · © 2025 Yash Technologies
+          Shopfloor Copilot v1.0 · © 2026 Yash Technologies
         </p>
       </div>
     </div>

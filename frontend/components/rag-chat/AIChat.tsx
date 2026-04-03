@@ -149,10 +149,8 @@ export default function AIChat() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const send = async (question: string) => {
+const send = async (question: string) => {
     if (!question.trim() || loading) return;
-
-    const reportInfo = detectReportRequest(question);
 
     const userMsg: MessageBubble = {
       role: 'user', text: question.trim(), ts: new Date(), reportInfo: null,
@@ -164,20 +162,18 @@ export default function AIChat() {
     try {
       const res = await api.ai.ask(question.trim());
 
-      // Build assistant message
-      let answerText = res.answer;
-
-      // If report detected, add info to response
-      if (reportInfo?.machine_id) {
-        answerText += `\n\nI've detected you want a ${reportInfo.report_type} report for Machine ${reportInfo.machine_id}. Use the download buttons below to get your report in PDF or Excel format.`;
-      }
+      // Use report_info from backend (real data detection)
+      const reportInfo = res.report_info?.has_report ? {
+        machine_id:  res.report_info.machine_id,
+        report_type: res.report_info.report_type,
+      } : null;
 
       setMessages(p => [...p, {
         role: 'assistant',
-        text: answerText,
+        text: res.answer,
         ts: new Date(),
-        reportInfo: reportInfo?.machine_id ? reportInfo : null,
-      }]);
+        reportInfo,
+      }]);        
     } catch (err: any) {
       setMessages(p => [...p, {
         role: 'assistant',

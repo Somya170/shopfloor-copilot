@@ -98,15 +98,11 @@ export default function DashboardPage() {
 
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{
-              background: '#0057A8', borderRadius: 5,
-              padding: '3px 8px', display: 'flex', alignItems: 'center', gap: 5,
-            }}>
-              <svg width="14" height="14" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-              </svg>
-              <span style={{ color: '#fff', fontWeight: 800, fontSize: 11, letterSpacing: .5 }}>YASH</span>
-            </div>
+            <img
+              src="/yash-logo.png"
+              alt="Yash Technologies"
+              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
+            />
             <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>Shopfloor Copilot</span>
           </div>
 
