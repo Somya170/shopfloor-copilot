@@ -117,7 +117,7 @@ export default function AdminView({ activeSection }: { activeSection: string }) 
 
       {/* Page title */}
       <div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: '#0F172A' }}>Admin Dashboard</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: '#0F172A' }}>Dashboard</div>
         <div style={{ fontSize: 13, color: '#94A3B8', marginTop: 2 }}>
           Real-time shopfloor overview · {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
         </div>
@@ -142,7 +142,7 @@ export default function AdminView({ activeSection }: { activeSection: string }) 
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>RAG Compliance Query Engine</span>
+              <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>Nexfloor Agent Query Engine</span>
               <span style={{
                 background: '#0057A8', color: '#fff', fontSize: 9,
                 fontWeight: 800, padding: '2px 6px', borderRadius: 3, letterSpacing: .5,
@@ -381,11 +381,11 @@ export default function AdminView({ activeSection }: { activeSection: string }) 
     </div>
   );
 
-  // ── RAG COMPLIANCE (AI) ────────────────────────────────────
+  // ── Nexfloor Agent (AI) ────────────────────────────────────
   if (activeSection === 'ai') return (
     <div className="animate-fade-up" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div>
-        <div style={{ fontSize: 20, fontWeight: 800, color: '#0F172A' }}>RAG Compliance</div>
+        <div style={{ fontSize: 20, fontWeight: 800, color: '#0F172A' }}>Nexfloor Agent</div>
         <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>AI-powered compliance queries with real-time factory data</div>
       </div>
       <div className="card" style={{ flex: 1 }}><AIChat /></div>

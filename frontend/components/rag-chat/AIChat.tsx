@@ -136,7 +136,7 @@ export default function AIChat() {
   const [messages, setMessages] = useState<MessageBubble[]>([
     {
       role: 'assistant',
-      text: "Hello! I'm your Shopfloor Copilot AI assistant.\n\nI can answer questions about machine status, telemetry, alerts, and maintenance.\n\nYou can also ask me to generate reports — e.g.:\n• \"Give me weekly report of Machine 1\"\n• \"Generate monthly report of Machine 3\"",
+      text: "Hello! I'm your EDGEAI AI assistant.\n\nI can answer questions about machine status, telemetry, alerts, and maintenance.\n\nYou can also ask me to generate reports — e.g.:\n• \"Give me weekly report of Machine 1\"\n• \"Generate monthly report of Machine 3\"",
       ts: new Date(),
       reportInfo: null,
     },
@@ -210,7 +210,7 @@ const send = async (question: string) => {
             </svg>
           </div>
           <div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>RAG Compliance Assistant</div>
+            <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>Nexfloor Agent Assistant</div>
             <div style={{ color: '#60A5FA', fontSize: 10 }}>Groq LLM · Qdrant Vector DB · Real-time data · Report Generation</div>
           </div>
         </div>

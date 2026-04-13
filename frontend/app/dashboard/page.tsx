@@ -39,7 +39,7 @@ export default function DashboardPage() {
       ? [{ key: 'overview', label: 'Overview' }, { key: 'compliance', label: 'Compliance' }]
       : [
           { key: 'overview',  label: 'Live Data' },
-          { key: 'ai',        label: 'RAG Compliance' },
+          { key: 'ai',        label: 'Nexfloor Agent' },
         ];
 
   return (
@@ -103,7 +103,7 @@ export default function DashboardPage() {
               alt="Yash Technologies"
               style={{ height: 32, width: 'auto', objectFit: 'contain' }}
             />
-            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>Shopfloor Copilot</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>EDGEAI</span>
           </div>
 
           {/* Center tabs */}

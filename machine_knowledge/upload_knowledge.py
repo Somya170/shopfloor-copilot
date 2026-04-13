@@ -59,7 +59,7 @@ def upload_machine_file(token: str, filepath: str) -> None:
 
 def main():
     print("=" * 60)
-    print("  Shopfloor Copilot — Knowledge Base Uploader")
+    print("  EDGEAI — Knowledge Base Uploader")
     print("=" * 60)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     token = login()

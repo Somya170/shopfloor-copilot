@@ -19,7 +19,7 @@ const NAV: NavItem[] = [
   { key: 'overview',   label: 'Overview',    icon: 'overview',   roles: ['admin','tech_staff','non_tech_staff'] },
   { key: 'machines',   label: 'Machines',    icon: 'machines',   roles: ['admin','tech_staff'] },
   { key: 'alerts',     label: 'Alerts',      icon: 'alerts',     roles: ['admin','tech_staff'] },
-  { key: 'ai',         label: 'RAG Compliance',icon: 'ai',         roles: ['admin','tech_staff'] },
+  { key: 'ai',         label: 'Nexfloor Agent',icon: 'ai',         roles: ['admin','tech_staff'] },
   { key: 'reports',    label: 'Reports',     icon: 'reports',    roles: ['admin','tech_staff'] },
   { key: 'users',      label: 'User Mgmt',   icon: 'users',      roles: ['admin'] },
   { key: 'compliance', label: 'Compliance',  icon: 'compliance', roles: ['non_tech_staff'] },

@@ -72,7 +72,7 @@ class ReportGenerator:
 
         # ── Header ──────────────────────────────────────────
         header_data = [[
-            Paragraph(f'<font color="#0057A8"><b>SHOPFLOOR COPILOT</b></font><br/><font size="8" color="#64748B">Yash Technologies · Machine Report</font>', styles['Normal']),
+            Paragraph(f'<font color="#0057A8"><b>EDGEAI</b></font><br/><font size="8" color="#64748B">Yash Technologies · Machine Report</font>', styles['Normal']),
             Paragraph(f'<font size="8" color="#64748B">Generated: {datetime.now().strftime("%d %b %Y, %H:%M")}</font>', ParagraphStyle('right', alignment=TA_LEFT)),
         ]]
         header_table = Table(header_data, colWidths=[120*mm, 50*mm])
@@ -200,7 +200,7 @@ class ReportGenerator:
         story.append(HRFlowable(width="100%", thickness=1, color=GRAY))
         story.append(Spacer(1, 2*mm))
         story.append(Paragraph(
-            f'<font size="8" color="#94A3B8">Shopfloor Copilot · Yash Technologies · Report generated on {datetime.now().strftime("%d %b %Y at %H:%M")} · Confidential</font>',
+            f'<font size="8" color="#94A3B8">EDGEAI · Yash Technologies · Report generated on {datetime.now().strftime("%d %b %Y at %H:%M")} · Confidential</font>',
             ParagraphStyle('footer', alignment=TA_CENTER)
         ))
 
@@ -241,7 +241,7 @@ class ReportGenerator:
 
         # Title
         ws.merge_cells('A1:F1')
-        ws['A1'] = f'SHOPFLOOR COPILOT — {machine["machine_name"]} {report_type.upper()} REPORT'
+        ws['A1'] = f'EDGEAI — {machine["machine_name"]} {report_type.upper()} REPORT'
         ws['A1'].font = Font(color="FFFFFF", bold=True, size=14)
         ws['A1'].fill = blue_fill
         ws['A1'].alignment = Alignment(horizontal='center', vertical='center')

@@ -70,10 +70,10 @@ export default function LoginPage() {
           </div>
 
           <h1 style={{ fontSize: 52, fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
-            <span style={{ color: '#0057A8' }}>Shopfloor</span>
+            <span style={{ color: '#0057A8' }}>EDGEAI</span>
             <br />
-            <span style={{ color: '#fff' }}>Copilot</span>
-          </h1>
+            <span style={{ color: '#fff' }}></span>
+          </h1> 
 
           <p style={{ color: '#94A3B8', fontSize: 16, lineHeight: 1.7, marginBottom: 40, maxWidth: 400 }}>
             RAG-powered compliance queries, real-time machine monitoring, and anomaly detection — built for Industry 4.0 shopfloors.
@@ -81,7 +81,7 @@ export default function LoginPage() {
 
           {/* Feature pills */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {['RAG Compliance AI', 'Live Sensor Streams', 'Anomaly Detection', 'Vector DB Powered'].map(f => (
+            {['Nexfloor Agent AI', 'Live Sensor Streams', 'Anomaly Detection', 'Vector DB Powered'].map(f => (
               <span key={f} style={{
                 padding: '7px 14px', borderRadius: 6,
                 border: '1px solid rgba(255,255,255,.1)',
@@ -105,7 +105,7 @@ export default function LoginPage() {
               alt="Yash Technologies"
               style={{ height: 32, width: 'auto', objectFit: 'contain' }}
             />
-            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>Shopfloor Copilot</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>EDGEAI</span>
           </div>
 
         {/* Role selector */}
@@ -183,7 +183,7 @@ export default function LoginPage() {
             borderRadius: 6, padding: '10px 14px', fontSize: 12,
           }}>
             <div style={{ fontWeight: 700, color: '#1D4ED8', marginBottom: 4 }}>Test credentials:</div>
-            <div style={{ color: '#3B82F6' }}>Admin: admin@factory.ai / Admin@1234</div>
+            <div style={{ color: '#3B82F6' }}>Admin: krenal@yash.com / Yash@123</div>
           </div>
 
           <button
@@ -201,7 +201,7 @@ export default function LoginPage() {
         </form>
 
         <p style={{ textAlign: 'center', color: '#94A3B8', fontSize: 11, marginTop: 32 }}>
-          Shopfloor Copilot v1.0 · © 2026 Yash Technologies
+          EDGEAI v1.0 · © 2026 Yash Technologies
         </p>
       </div>
     </div>
