@@ -1,4 +1,3 @@
-/* app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,10 +9,38 @@
   --yash-navy: #060C1A;
 
   /* Accent */
-  --acc:    #0057A8;
-  --acc-lt: #E8F1FB;
+  --acc:    #3B82F6;
+  --acc-lt: #1e3a5f;
 
-  /* Grays */
+  /* Grays — default DARK theme hi rahega */
+  --g50:  #0D1B2A;
+  --g100: #162032;
+  --g200: #1E2D40;
+  --g300: #2A3F57;
+  --g400: #4A6580;
+  --g500: #6B87A8;
+  --g600: #94A3B8;
+  --g700: #CBD5E1;
+  --g800: #E2E8F0;
+  --g900: #F1F5F9;
+
+  /* Status */
+  --green:  #10B981;
+  --yellow: #F59E0B;
+  --red:    #EF4444;
+
+  /* Layout */
+  --sidebar-w: 220px;
+  --header-h:  56px;
+
+  /* Card bg */
+  --card-bg:    #162032;
+  --card-border:#1E2D40;
+  --body-bg:    #0D1B2A;
+}
+
+/* Light mode overrides */
+[data-theme="light"] {
   --g50:  #F8FAFC;
   --g100: #F1F5F9;
   --g200: #E2E8F0;
@@ -24,26 +51,22 @@
   --g700: #334155;
   --g800: #1E293B;
   --g900: #0F172A;
-
-  /* Status */
-  --green:  #059669;
-  --yellow: #D97706;
-  --red:    #DC2626;
-
-  /* Layout */
-  --sidebar-w: 220px;
-  --header-h:  60px;
+  --acc-lt: #E8F1FB;
+  --card-bg:    #ffffff;
+  --card-border:#E2E8F0;
+  --body-bg:    #F8FAFC;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: var(--font-sans, sans-serif);
-  background: var(--g50);
+  background: var(--body-bg);
   color: var(--g800);
   font-size: 13px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background .2s, color .2s;
 }
 
 /* Scrollbar */
@@ -69,31 +92,30 @@ body {
 }
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  100% { background-position:  200% 0; }
 }
 
-.animate-fade-up   { animation: fade-up 0.35s ease both; }
-.animate-slide-in  { animation: slide-in-right 0.3s ease both; }
+.animate-fade-up  { animation: fade-up 0.35s ease both; }
+.animate-slide-in { animation: slide-in-right 0.3s ease both; }
 
 /* Status dots */
-.dot {
-  width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0;
-}
-.dot-green    { background: var(--green); }
-.dot-yellow   { background: var(--yellow); }
-.dot-red      { background: var(--red); animation: pulse-dot 1.2s ease-in-out infinite; }
-.dot-gray     { background: var(--g400); }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot-green  { background: var(--green); }
+.dot-yellow { background: var(--yellow); }
+.dot-red    { background: var(--red); animation: pulse-dot 1.2s ease-in-out infinite; }
+.dot-gray   { background: var(--g400); }
 
 /* Card */
 .card {
-  background: #fff;
-  border: 1px solid var(--g200);
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  transition: background .2s, border-color .2s;
 }
 .card-header {
   padding: 14px 18px;
-  border-bottom: 1px solid var(--g100);
+  border-bottom: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -109,22 +131,17 @@ body {
 
 /* Badge */
 .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: .3px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .3px;
 }
-.badge-normal   { background: #ECFDF5; color: var(--green); }
-.badge-warning  { background: #FFFBEB; color: var(--yellow); }
-.badge-critical { background: #FEF2F2; color: var(--red); }
-.badge-offline  { background: var(--g100); color: var(--g500); }
+.badge-normal   { background: rgba(16,185,129,.15); color: #10B981; }
+.badge-warning  { background: rgba(245,158,11,.15);  color: #F59E0B; }
+.badge-critical { background: rgba(239,68,68,.15);   color: #EF4444; }
+.badge-offline  { background: var(--g200); color: var(--g500); }
 .badge-info     { background: var(--acc-lt); color: var(--acc); }
 
-/* Skeleton loader */
+/* Skeleton */
 .skeleton {
   background: linear-gradient(90deg, var(--g100) 25%, var(--g200) 50%, var(--g100) 75%);
   background-size: 200% 100%;
@@ -134,3 +151,14 @@ body {
 
 /* Font mono */
 .mono { font-family: var(--font-mono, monospace); }
+
+/* Table row hover */
+tr:hover td { background: var(--g100); }
+
+/* Input / Select dark */
+select, input {
+  background: var(--g100) !important;
+  color: var(--g800) !important;
+  border-color: var(--g200) !important;
+}
+select option { background: var(--g100); color: var(--g800); }

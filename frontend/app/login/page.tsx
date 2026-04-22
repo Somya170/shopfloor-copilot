@@ -101,7 +101,7 @@ export default function LoginPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <img
-              src="/yash-logo.png"
+              src="/yash-logo.svg"
               alt="Yash Technologies"
               style={{ height: 32, width: 'auto', objectFit: 'contain' }}
             />

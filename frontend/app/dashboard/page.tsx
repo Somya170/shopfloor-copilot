@@ -13,6 +13,17 @@ export default function DashboardPage() {
   const router = useRouter();
   const [section,     setSection]     = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Default DARK — kyunki theme hi dark hai ab
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  // Start dark by default
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) router.push('/login');
@@ -21,7 +32,8 @@ export default function DashboardPage() {
   if (loading || !user) return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', gap: 12, color: 'var(--g400)',
+      justifyContent: 'center', gap: 12,
+      background: '#0D1B2A', color: '#6B87A8',
     }}>
       <LoadingSpinner size={24} />
       <span>Loading platform…</span>
@@ -38,28 +50,30 @@ export default function DashboardPage() {
     user.role === 'non_tech_staff'
       ? [{ key: 'overview', label: 'Overview' }, { key: 'compliance', label: 'Compliance' }]
       : [
-          { key: 'overview',  label: 'Live Data' },
-          { key: 'ai',        label: 'Nexfloor Agent' },
+          { key: 'overview', label: 'Live Data' },
+          { key: 'ai',       label: 'Nexfloor Agent' },
         ];
 
-  return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#F8FAFC' }}>
+  const isDark = darkMode;
+  const navBg     = isDark ? '#111C2D' : '#ffffff';
+  const navBorder = isDark ? '#1E2D40' : '#E2E8F0';
+  const textMain  = isDark ? '#E2E8F0' : '#0F172A';
+  const textMuted = isDark ? '#4A6580' : '#94A3B8';
 
-      {/* ── Sidebar overlay (mobile / hamburger) ── */}
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--body-bg)' }}>
+
+      {/* Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          style={{
-            position: 'fixed', inset: 0, background: 'rgba(0,0,0,.4)',
-            zIndex: 200,
-          }}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)', zIndex: 200 }}
         />
       )}
 
-      {/* ── Sidebar ── */}
+      {/* Sidebar */}
       <div style={{
-        position: 'fixed', top: 0, left: 0, height: '100vh',
-        zIndex: 300,
+        position: 'fixed', top: 0, left: 0, height: '100vh', zIndex: 300,
         transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
         transition: 'transform .25s ease',
       }}>
@@ -67,27 +81,33 @@ export default function DashboardPage() {
           active={section}
           onNav={key => { setSection(key); setSidebarOpen(false); }}
           onClose={() => setSidebarOpen(false)}
+          darkMode={darkMode}
+          onToggleDark={() => setDarkMode(d => !d)}
         />
       </div>
 
-      {/* ── Main ── */}
+      {/* Main */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
-        {/* ── Top Navbar ── */}
+        {/* Top Navbar */}
         <header style={{
-          height: 56, background: '#fff',
-          borderBottom: '1px solid #E2E8F0',
+          height: 56,
+          background: navBg,
+          borderBottom: `1px solid ${navBorder}`,
           display: 'flex', alignItems: 'center',
           padding: '0 24px', gap: 16,
           position: 'sticky', top: 0, zIndex: 100,
-          boxShadow: '0 1px 4px rgba(0,0,0,.04)',
+          boxShadow: '0 2px 12px rgba(0,0,0,.3)',
+          transition: 'background .2s',
         }}>
+
           {/* Hamburger */}
           <button
             onClick={() => setSidebarOpen(o => !o)}
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              padding: 6, borderRadius: 6, color: '#475569',
+              padding: 6, borderRadius: 6,
+              color: isDark ? '#6B87A8' : '#475569',
               display: 'flex', flexDirection: 'column', gap: 4,
             }}
           >
@@ -98,26 +118,22 @@ export default function DashboardPage() {
 
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img
-              src="/yash-logo.png"
-              alt="Yash Technologies"
-              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
-            />
-            <span style={{ fontWeight: 700, fontSize: 14, color: '#0F172A' }}>EDGEAI</span>
+            <img src="/yash-logo.png" alt="Yash" style={{ height: 30, width: 'auto', objectFit: 'contain' }} />
+            <span style={{ fontWeight: 800, fontSize: 14, color: textMain, letterSpacing: .5 }}>EDGEAI</span>
           </div>
 
-          {/* Center tabs */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 4 }}>
+          {/* Center Tabs */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 2 }}>
             {topTabs.map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setSection(tab.key)}
                 style={{
-                  padding: '6px 18px', borderRadius: 6, border: 'none',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                  background: section === tab.key ? '#F1F5F9' : 'transparent',
-                  color: section === tab.key ? '#0057A8' : '#64748B',
-                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '8px 20px', border: 'none', cursor: 'pointer',
+                  fontSize: 13, fontWeight: 600,
+                  background: 'transparent',
+                  color: section === tab.key ? '#3B82F6' : textMuted,
+                  display: 'flex', alignItems: 'center', gap: 7,
                   borderBottom: section === tab.key ? '2px solid #E31837' : '2px solid transparent',
                   borderRadius: 0, transition: 'all .15s',
                 }}
@@ -145,31 +161,36 @@ export default function DashboardPage() {
           </div>
 
           {/* Right side */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#059669', display: 'inline-block', animation: 'pulse-dot 1.5s ease-in-out infinite' }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: '#059669' }}>Live</span>
+              <span style={{
+                width: 7, height: 7, borderRadius: '50%', background: '#10B981',
+                display: 'inline-block', animation: 'pulse-dot 1.5s ease-in-out infinite',
+              }} />
+              <span style={{ fontSize: 12, fontWeight: 600, color: '#10B981' }}>Live</span>
             </div>
-            <span style={{ fontSize: 11, color: '#94A3B8' }}>
+            <span style={{ fontSize: 11, color: textMuted }}>
               {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </span>
             <div style={{
               width: 34, height: 34, borderRadius: '50%',
-              background: '#0057A8', display: 'flex', alignItems: 'center',
+              background: 'linear-gradient(135deg, #0057A8, #3B82F6)',
+              display: 'flex', alignItems: 'center',
               justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700,
+              boxShadow: '0 2px 8px rgba(0,87,168,.4)',
             }}>
               {user.name?.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2)}
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#0F172A' }}>{user.name}</div>
-              <div style={{ fontSize: 10, color: '#94A3B8' }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: textMain }}>{user.name}</div>
+              <div style={{ fontSize: 10, color: textMuted }}>
                 {user.role === 'admin' ? 'Admin' : user.role === 'tech_staff' ? 'Tech Staff' : 'Staff'}
               </div>
             </div>
           </div>
         </header>
 
-        {/* ── Page content ── */}
+        {/* Page content */}
         <main style={{ flex: 1, padding: 24, overflowY: 'auto' }}>
           <DashView activeSection={section} />
         </main>
