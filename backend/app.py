@@ -165,12 +165,18 @@ def _bootstrap_services() -> None:
     except Exception as exc:
         logger.warning("RAG engine startup failed: %s", exc)
 
-
 # ── Entry point ───────────────────────────────────────────────
 if __name__ == "__main__":
     _bootstrap_services()
 
     app, socketio = create_app()
+
+    # Edge AI fetcher (Machine_6)
+    try:
+        from services.edge_ai_fetcher import edge_ai_fetcher
+        edge_ai_fetcher.start()
+    except Exception as exc:
+        logger.warning("Edge AI fetcher startup failed: %s", exc)
 
     # Start Redis listener in background thread
     try:
@@ -184,13 +190,15 @@ if __name__ == "__main__":
     except Exception as exc:
         logger.warning("Redis listener thread failed: %s", exc)
 
-    port = int(os.getenv("PORT", "5000"))
+    port = int(os.getenv("PORT", "5001"))
+
     logger.info("Starting %s on port %d", settings.APP_NAME, port)
+
     socketio.run(
         app,
         host="0.0.0.0",
         port=port,
         debug=settings.DEBUG,
-        use_reloader=False,   # reloader breaks background threads
+        use_reloader=False,
         allow_unsafe_werkzeug=True,
     )

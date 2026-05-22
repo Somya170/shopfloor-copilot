@@ -1,17 +1,18 @@
 'use client';
+import PredictiveView from '@/components/dashboard/views/PredictiveView';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import Sidebar from '@/components/dashboard/Sidebar';
-import AdminView   from '@/components/dashboard/views/AdminView';
-import TechView    from '@/components/dashboard/views/TechView';
+import AdminView from '@/components/dashboard/views/AdminView';
+import TechView from '@/components/dashboard/views/TechView';
 import NonTechView from '@/components/dashboard/views/NonTechView';
 import { LoadingSpinner } from '@/components/ui';
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [section,     setSection]     = useState('overview');
+  const [section, setSection] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // Default DARK — kyunki theme hi dark hai ab
   const [darkMode, setDarkMode] = useState(true);
@@ -43,21 +44,22 @@ export default function DashboardPage() {
   const DashView = user.role === 'admin'
     ? AdminView
     : user.role === 'tech_staff'
-    ? TechView
-    : NonTechView;
+      ? TechView
+      : NonTechView;
 
   const topTabs =
     user.role === 'non_tech_staff'
       ? [{ key: 'overview', label: 'Overview' }, { key: 'compliance', label: 'Compliance' }]
       : [
-          { key: 'overview', label: 'Live Data' },
-          { key: 'ai',       label: 'Nexfloor Agent' },
-        ];
+        { key: 'overview', label: 'Live Data' },
+        { key: 'ai', label: 'Nexfloor Agent' },
+        { key: 'predictive', label: 'Predictive AI' },
+      ];
 
   const isDark = darkMode;
-  const navBg     = isDark ? '#111C2D' : '#ffffff';
+  const navBg = isDark ? '#111C2D' : '#ffffff';
   const navBorder = isDark ? '#1E2D40' : '#E2E8F0';
-  const textMain  = isDark ? '#E2E8F0' : '#0F172A';
+  const textMain = isDark ? '#E2E8F0' : '#0F172A';
   const textMuted = isDark ? '#4A6580' : '#94A3B8';
 
   return (
@@ -140,12 +142,12 @@ export default function DashboardPage() {
               >
                 {tab.key === 'overview' && (
                   <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
                   </svg>
                 )}
                 {tab.key === 'ai' && (
                   <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
                   </svg>
                 )}
                 {tab.label}
@@ -192,7 +194,10 @@ export default function DashboardPage() {
 
         {/* Page content */}
         <main style={{ flex: 1, padding: 24, overflowY: 'auto' }}>
-          <DashView activeSection={section} />
+          {section === 'predictive'
+            ? <PredictiveView />
+            : <DashView activeSection={section} />
+          }
         </main>
       </div>
     </div>

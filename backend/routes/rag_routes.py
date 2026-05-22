@@ -141,6 +141,52 @@ def _build_real_report_context(intent: dict) -> dict:
         'alerts':        [dict(a) for a in alerts],
     }
 
+def _detect_historical_query(question: str) -> dict | None:
+    """Detect date-specific historical queries."""
+    import re
+    from datetime import datetime
+    
+    q = question.lower()
+    
+    # Date patterns: 20-02-2026, 20/02/2026, february 20
+    date_patterns = [
+        r'(\d{1,2}[-/]\d{1,2}[-/]\d{4})',
+        r'(\d{4}[-/]\d{1,2}[-/]\d{1,2})',
+    ]
+    
+    date_found = None
+    for pattern in date_patterns:
+        match = re.search(pattern, question)
+        if match:
+            date_found = match.group(1)
+            break
+    
+    if not date_found:
+        return None
+    
+    # Detect machine
+    machine_name = None
+    for i in range(1, 7):
+        if f'machine {i}' in q or f'machine_{i}' in q:
+            machine_name = f'Machine_{i}'
+            break
+    
+    # Detect metric
+    metric = None
+    if 'vibration' in q or 'vibr' in q:
+        metric = 'vibration'
+    elif 'temperature' in q or 'temp' in q:
+        metric = 'temperature'
+    elif 'rpm' in q:
+        metric = 'rpm'
+    elif 'power' in q:
+        metric = 'power_consumption'
+    
+    return {
+        'date': date_found,
+        'machine': machine_name,
+        'metric': metric,
+    }
 
 def _format_real_report_text(data: dict, report_type: str) -> str:
     """Format real data into a readable report text for chat."""
@@ -232,48 +278,93 @@ def _format_real_report_text(data: dict, report_type: str) -> str:
 def ask_ai():
     data     = request.get_json(silent=True) or {}
     question = (data.get("question") or "").strip()
-    if not question:
-        return jsonify({"error": "Question is required"}), 400
-    if len(question) > 2000:
-        return jsonify({"error": "Question too long"}), 400
-
-    # ── Detect report intent ──────────────────────────────────
-    intent = _detect_report_intent(question)
-
-    if intent:
-        # Fetch REAL data and format as report
-        real_data   = _build_real_report_context(intent)
-        report_text = _format_real_report_text(real_data, intent['report_type'])
-
-        # Also ask RAG for additional context
-        try:
-            rag_result = rag_engine.query(question, user_id=g.user_id)
-            # Combine real data report with RAG knowledge
-            final_answer = report_text
-        except Exception:
-            final_answer = report_text
-
-        return jsonify({
-            "answer":      final_answer,
-            "sources":     [],
-            "telemetry":   "",
-            "report_info": {
-                "machine_id":  intent['machine_id'],
-                "report_type": intent['period'],
-                "has_report":  True,
-            }
-        }), 200
-
-    # ── Normal RAG query ──────────────────────────────────────
+    
+    # Check historical query
+    hist = _detect_historical_query(question)
+    if hist and hist.get('machine') and hist.get('metric'):
+        # Direct DB query
+        result = _fetch_historical_data(
+            hist['machine'], hist['metric'], hist['date']
+        )
+        if result:
+            return jsonify({
+                "answer": result,
+                "sources": ["TimescaleDB Historical Data"],
+                "telemetry": "",
+                "report_info": None,
+            }), 200
+    
+    # Normal RAG
     try:
         result = rag_engine.query(question, user_id=g.user_id)
         result["report_info"] = None
         return jsonify(result), 200
     except Exception as exc:
-        logger.error("RAG query failed: %s", exc)
-        return jsonify({"error": "AI assistant temporarily unavailable"}), 503
+        return jsonify({"error": "AI unavailable"}), 503
 
 
+def _fetch_historical_data(machine_name: str, metric: str, date_str: str) -> str:
+    """Fetch specific historical data from TimescaleDB."""
+    from database.db import execute_one, execute_many
+    import re
+    
+    # Parse date
+    parts = re.split(r'[-/]', date_str)
+    if len(parts) == 3:
+        if len(parts[2]) == 4:  # DD-MM-YYYY
+            day, month, year = parts
+        else:  # YYYY-MM-DD
+            year, month, day = parts
+        
+        date_formatted = f"{year}-{month.zfill(2)}-{day.zfill(2)}"
+    else:
+        return None
+    
+    # Get machine ID
+    machine = execute_one(
+        "SELECT id FROM machines WHERE machine_name = %s",
+        (machine_name,)
+    )
+    if not machine:
+        return f"{machine_name} not found in database."
+    
+    # Fetch stats for that date
+    stats = execute_one(
+        f"""
+        SELECT
+            ROUND(AVG({metric})::numeric, 4) AS avg_val,
+            ROUND(MAX({metric})::numeric, 4) AS max_val,
+            ROUND(MIN({metric})::numeric, 4) AS min_val,
+            COUNT(*) AS readings
+        FROM machine_data
+        WHERE machine_id = %s
+          AND DATE(timestamp) = %s
+        """,
+        (machine["id"], date_formatted)
+    )
+    
+    if not stats or not stats["readings"]:
+        return (f"{machine_name} ka {metric} data "
+                f"{date_str} ke liye available nahi hai "
+                f"(data us date ka stored nahi hai).")
+    
+    units = {
+        'temperature': '°C',
+        'vibration': 'mm/s', 
+        'rpm': 'RPM',
+        'power_consumption': 'W'
+    }
+    unit = units.get(metric, '')
+    
+    return (
+        f"{machine_name} — {metric.replace('_', ' ').title()} "
+        f"on {date_str}:\n"
+        f"  Average : {stats['avg_val']} {unit}\n"
+        f"  Maximum : {stats['max_val']} {unit}\n"
+        f"  Minimum : {stats['min_val']} {unit}\n"
+        f"  Readings: {stats['readings']} data points\n\n"
+        f"Note: Data is from TimescaleDB historical records."
+    )
 @rag_bp.route("/chat-history", methods=["GET"])
 @jwt_required
 def chat_history():

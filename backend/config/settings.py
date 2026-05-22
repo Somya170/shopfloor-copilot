@@ -61,6 +61,20 @@ class Settings:
     GROQ_API_KEY  = os.getenv("GROQ_API_KEY",  "")
     GROQ_MODEL    = os.getenv("GROQ_MODEL",    "llama3-8b-8192")
 
+    # ── Ollama (Local/Offline SLM) ─────────────────────────────
+    OLLAMA_HOST  = os.getenv("OLLAMA_HOST",  "http://localhost:11434")
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:3b")
+
+    # ── LLM Mode ───────────────────────────────────────────────
+    # 'auto'   = internet check → Groq if available, Ollama fallback
+    # 'groq'   = always Groq
+    # 'ollama' = always Ollama
+    LLM_MODE = os.getenv("LLM_MODE", "auto")
+
+    # Internet check URL
+    INTERNET_CHECK_URL     = os.getenv("INTERNET_CHECK_URL", "https://api.groq.com")
+    INTERNET_CHECK_TIMEOUT = float(os.getenv("INTERNET_CHECK_TIMEOUT", "2.0"))
+
     # ── ML ─────────────────────────────────────────────────────
     ANOMALY_CONTAMINATION  = float(os.getenv("ANOMALY_CONTAMINATION",  "0.05"))
     ANOMALY_RETRAIN_ROWS   = int(os.getenv("ANOMALY_RETRAIN_ROWS",    "500"))

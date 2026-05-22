@@ -1,0 +1,18 @@
+{
+  "machine_id": 3,
+  "machine_name": "Machine_3",
+  "machine_type": "Conveyor Motor",
+  "location": "Zone B - Bay 1",
+  "documents": [
+    {
+      "title": "Machine_3 — Production & Operator Log March 2026",
+      "doc_type": "production_log",
+      "content": "Machine_3 Conveyor Motor production logs for March 2026. Date: 2026-03-20, Shift: Day shift 06:00-14:00, Operator: Ramesh K., Parts Produced: 62, Uptime: 480 minutes (100%), Downtime: 0 minutes, Avg Temperature: 56.4°C, Peak Temperature: 62.0°C, Avg Vibration: 0.153 mm/s, Peak Vibration: 0.193 mm/s, Avg RPM: 2530, Avg Power: 870W, Peak Power: 947W, Alerts: 0. Date: 2026-03-21, Shift: Day shift 06:00-14:00, Operator: Dinesh T., Parts Produced: 41, Uptime: 480 minutes (100%), Downtime: 0 minutes, Avg Temperature: 64.6°C, Peak Temperature: 73.4°C, Avg Vibration: 0.165 mm/s, Peak Vibration: 0.232 mm/s, Avg RPM: 2386, Avg Power: 859W, Peak Power: 978W, Alerts: 0. Date: 2026-03-22, Shift: Night shift 22:00-06:00, Operator: Arvind M., Parts Produced: 55, Uptime: 450 minutes, Downtime: 30 minutes, Downtime Reason: Belt adjustment, Avg Temperature: 58.2°C, Avg Vibration: 0.148 mm/s, Avg RPM: 2480, Avg Power: 855W, Alerts: 1."
+    },
+    {
+      "title": "Machine_3 — Operator Information",
+      "doc_type": "operator_log",
+      "content": "Machine_3 Conveyor Motor operators: Ramesh K. works Day shift (06:00-14:00), handles routine belt maintenance, produced 62 parts on 2026-03-20. Dinesh T. works Day shift (06:00-14:00), produced 41 parts on 2026-03-21, experienced higher temperature 64.6°C. Arvind M. works Night shift (22:00-06:00), produced 55 parts on 2026-03-22, performed belt adjustment during 30-minute downtime. Priya S. works Evening shift (14:00-22:00), routine operations. Note: Ramesh K. is a senior operator with expertise in belt tension adjustment and conveyor maintenance."
+    }
+  ]
+}

@@ -10,9 +10,9 @@ import sys
 import requests
 
 # ── Config ────────────────────────────────────────────────────
-API_URL   = "http://localhost:5000"
-EMAIL     = "admin@factory.ai"
-PASSWORD  = "Admin@1234"
+API_URL   = "http://localhost:5001"
+EMAIL     = "krenal@yash.com"
+PASSWORD  = "Yash@123"
 
 # ── JSON files to upload ──────────────────────────────────────
 JSON_FILES = [
@@ -21,6 +21,8 @@ JSON_FILES = [
     "machine_3_conveyor_motor.json",
     "machine_4_industrial_pump.json",
     "machine_5_compressor.json",
+    "machine_6_edge_ai_compressor.json",
+    "machine_3_production_logs.json",
 ]
 
 def login() -> str:

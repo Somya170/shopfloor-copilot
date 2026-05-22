@@ -61,6 +61,32 @@ CREATE TABLE IF NOT EXISTS alerts (
     timestamp    TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ── MACHINE_6 PREDICTION HISTORY ─────────────────────────────
+CREATE TABLE IF NOT EXISTS machine_6_predictions (
+    id           BIGSERIAL PRIMARY KEY,
+    health_score  FLOAT NOT NULL,
+    failure_risk  FLOAT NOT NULL,
+    rul_hours     FLOAT NOT NULL,
+    fault_type    VARCHAR(60) DEFAULT 'none',
+    confidence    FLOAT DEFAULT 1.0,
+    status        VARCHAR(20) DEFAULT 'normal',
+    motor_off     BOOLEAN DEFAULT FALSE,
+    trend         FLOAT DEFAULT 0,
+    -- Raw sensor snapshot
+    temperature   FLOAT,
+    v_rmsy        FLOAT,
+    acoustic_rms  FLOAT,
+    timestamp     TIMESTAMPTZ DEFAULT NOW()
+);
+
+SELECT create_hypertable(
+    'machine_6_predictions', 'timestamp',
+    if_not_exists => TRUE
+);
+
+CREATE INDEX IF NOT EXISTS idx_m6_pred_timestamp
+    ON machine_6_predictions(timestamp DESC);
+
 CREATE INDEX IF NOT EXISTS idx_alerts_machine_id ON alerts(machine_id, timestamp DESC);
 CREATE INDEX IF NOT EXISTS idx_alerts_severity   ON alerts(severity, is_resolved);
 

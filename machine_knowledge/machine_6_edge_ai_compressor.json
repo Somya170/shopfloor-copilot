@@ -1,0 +1,33 @@
+{
+  "machine_id": 6,
+  "machine_name": "Machine_6",
+  "machine_type": "Compressor (Edge AI)",
+  "location": "Zone C - Bay 2",
+  "documents": [
+    {
+      "title": "Machine_6 Edge AI Compressor — Operating Manual",
+      "doc_type": "manual",
+      "content": "Machine_6 is an Edge AI-monitored Rotary Compressor in Zone C - Bay 2. Device MAC: E4:65:B8:2C:73:48. Monitored via MQTT topic wired/rms/#. Sensor parameters: aRMSx, aRMSy, aRMSz (acceleration in g), vRMSx, vRMSy, vRMSz (velocity in mm/s), temperature (°C), aucausticRMS (dB). Normal operating ranges: Temperature 20–30°C, vRMSy 0.5–1.5 mm/s, Acoustic RMS 50–58 dB. RPM and Power not available from this sensor. Health score 80–100% indicates normal operation. Failure risk below 20% is acceptable. Remaining Useful Life (RUL) target: above 15 days."
+    },
+    {
+      "title": "Machine_6 Edge AI — ML Model Details",
+      "doc_type": "manual",
+      "content": "Machine_6 uses two ML models for predictive maintenance. Model 1: Isolation Forest for unsupervised anomaly detection — detects unknown fault patterns without labeled data. Model 2: Random Forest classifier with 99.78% accuracy on 48,809 samples — classifies fault types: none, bearing fault, misalignment, imbalance, overheating. Health score formula: health = 100 - (anomaly_severity × 0.4) - (fault_weight × 45). RUL formula: RUL = 720 × (health_score/100)² in hours. SensorBuffer uses 30-reading rolling window with EMA smoothing (α=0.3). Motor OFF detection triggers when vibration < 0.05 mm/s threshold."
+    },
+    {
+      "title": "Machine_6 Edge AI Compressor — Maintenance Schedule",
+      "doc_type": "maintenance_schedule",
+      "content": "Machine_6 Predictive Maintenance Schedule. REAL-TIME: AI monitors health score continuously — alert if health drops below 70%. DAILY: Check AI dashboard for failure risk above 30%, review vibration trend in vRMSy. WEEKLY: Inspect bearing condition if vibration > 1.5 mm/s sustained. Check acoustic RMS — normal 50–58 dB, investigate if above 60 dB. MONTHLY: Review AI fault history, check for recurring bearing fault or misalignment patterns. Download monthly performance report. ON ALERT: bearing fault — schedule inspection within 48 hours. misalignment — check motor coupling alignment. imbalance — inspect impeller/rotor balance. overheating — check cooling and ambient temperature."
+    },
+    {
+      "title": "Machine_6 Edge AI — Alert Explanations",
+      "doc_type": "alert_explanation",
+      "content": "Machine_6 Alert Guide. BEARING FAULT (AI detected): Isolation Forest + Random Forest both flag bearing degradation. Symptoms: vRMSy elevated above 1.5 mm/s, acoustic RMS increasing, health score declining. Actions: schedule bearing inspection within 48 hours, reduce compressor load by 20%. MISALIGNMENT ALERT: vRMSy and aRMSy both elevated, characteristic frequency pattern detected. Actions: shut down and check motor-compressor coupling alignment. IMBALANCE ALERT: Rotational frequency vibration pattern, all axes affected. Actions: inspect impeller for damage or debris buildup. OVERHEATING: Temperature above 30°C sustained. Actions: check inlet filter, cooling system, ambient ventilation. HIGH FAILURE RISK (>50%): Immediate maintenance required — do not ignore. MOTOR OFF: All vibration below 0.05 mm/s — machine intentionally stopped or power loss."
+    },
+    {
+      "title": "Machine_6 Edge AI — Operator Guidelines",
+      "doc_type": "operator_guidelines",
+      "content": "Machine_6 Operator Guidelines. MONITORING: Check AI dashboard health score at start of each shift — target above 80%. Monitor failure risk — investigate immediately if above 30%. Review AI recommendations panel — always shows 4 prioritized action items. ALERTS: bearing fault alert — do not ignore, schedule maintenance within 48 hours. misalignment alert — stop machine and align coupling before continuing. imbalance alert — check impeller and clean debris. REPORTS: Generate weekly Edge AI report from RAG Console or Reports section. Ask AI: 'Give me weekly report of Machine 6' or 'What is the health of Machine 6'. SHIFT HANDOVER: Record current health score, note any AI alerts during shift, check failure risk trend (increasing or decreasing), log any motor OFF events. SENSOR INFO: Device streams data every 5–7 seconds via MQTT. If data stops for more than 30 seconds, check MQTT broker and network connection to MAC E4:65:B8:2C:73:48."
+    }
+  ]
+}
