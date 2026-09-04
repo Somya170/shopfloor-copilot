@@ -5,13 +5,13 @@
 ![Shopfloor Copilot](https://img.shields.io/badge/Shopfloor-Copilot-0057A8?style=for-the-badge&logo=nvidia&logoColor=white)
 ![Version](https://img.shields.io/badge/Version-1.0.0-E31837?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Jetson%20AGX%20Orin-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
-![License](https://img.shields.io/badge/License-Proprietary-gray?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge)
 
 **AI-Powered Industrial Manufacturing Monitoring Platform**
 
 *RAG-powered compliance queries · Real-time machine monitoring · Anomaly detection · Built for Industry 4.0*
 
-**Developed by [Yash Technologies](https://www.yashtech.com)**
+**Built by [Somya](https://github.com/Somya170)**
 
 </div>
 
@@ -74,8 +74,7 @@
 
 ### 📊 Report Generation
 - Weekly, Monthly, Custom date range reports
-- PDF reports with Yash Technologies branding
-- Excel reports with telemetry data sheets
+- PDF and Excel reports with telemetry data sheets
 - Downloadable directly from RAG chat or Reports section
 - AI-generated summaries and recommendations
 
@@ -280,7 +279,7 @@ PORT=5001
 CORS_ORIGINS=http://localhost:3000
 ```
 
-> 🔑 **Get Groq API Key FREE:** https://console.groq.com
+> 🔑 **Get a free Groq API Key:** https://console.groq.com
 
 ### Frontend Setup
 
@@ -338,7 +337,7 @@ chmod +x backend/start.sh
 
 ## ⚙️ Auto-Start (systemd)
 
-Set up services to start automatically when Jetson boots:
+Set up services to start automatically when the Jetson boots:
 
 ```bash
 # Enable services
@@ -369,11 +368,7 @@ sudo systemctl restart shopfloor-frontend
 
 ## 🔑 Default Login
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | krenal@yash.com | Yash@123 |
-
-> ⚠️ Change credentials in production!
+> ⚠️ No default credentials are seeded in this repo. On first run, use the signup flow (`/api/auth/signup`) to create an Admin account, or seed one yourself via `database/schema.sql`.
 
 ---
 
@@ -488,7 +483,7 @@ shopfloor-copilot/
 ## 🗺️ Phase Roadmap
 
 ### ✅ Phase 1 — Foundation (Complete)
-- [x] Shopfloor Copilot UI with Yash Technologies branding
+- [x] Shopfloor Copilot core UI
 - [x] Role-based dashboards (Admin, Tech, Non-Tech)
 - [x] Real-time WebSocket telemetry streaming
 - [x] JWT authentication + RBAC
@@ -520,7 +515,7 @@ shopfloor-copilot/
 
 | Login Page | Admin Dashboard |
 |-----------|----------------|
-| Shopfloor Copilot login with Yash branding | Live sensor stream + anomaly panel |
+| Login screen | Live sensor stream + anomaly panel |
 
 | RAG Compliance | Reports |
 |---------------|---------|
@@ -528,23 +523,21 @@ shopfloor-copilot/
 
 ---
 
-## 🤝 Contributing
+## 🤝 About This Project
 
-This is a proprietary project developed for **Yash Technologies**.
+Built independently as a personal exploration of edge-AI industrial monitoring — combining real-time telemetry, ML-based anomaly detection, and a RAG-powered assistant on Nvidia Jetson hardware.
 
 ---
 
 ## 📄 License
 
-Copyright © 2026 Yash Technologies. All rights reserved.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
 <div align="center">
 
 **Shopfloor Copilot v1.0**
-
-Built with ❤️ by Yash Technologies
 
 *Powered by Nvidia Jetson AGX Orin · Groq LLM · LangChain · Qdrant*
 
